@@ -1,25 +1,121 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { motion } from 'framer-motion'
 
-function App() {
+import Table from './components/Table'
+import Modal from './components/Modal'
+
+const App = () => {
+  const [modalActive, setModalActive] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm()
+  const onSubmit = (data) => console.log(data)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container mx-auto px-4 sm:px-4'>
+      <div className='py-8'>
+        <div className='py-2'>
+          <h2 className='text-2xl font-semibold leading-tight'>Eurasian Bank table</h2>
+        </div>
+        <div className='py-3'>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            className='bg-green-500 text-white rounded-md px-8 py-2 text-base font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300'
+            id='open-btn'
+            onClick={() => setModalActive(!modalActive)}>
+            Добавить запись
+          </motion.button>
+        </div>
+        <Table />
+      </div>
+      <Modal active={modalActive} setActive={setModalActive}>
+        <div className='flex justify-between flex-col items-center'>
+          <span className='font-bold text-lg'>Добавить запись</span>
+          <form
+            id='submitForm'
+            onSubmit={handleSubmit(onSubmit)}
+            className='flex flex-col m-2 p-2 w-full'
+            method='POST'>
+            <div>
+              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+                ID
+              </label>
+              <input
+                {...register('ID')}
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+              />
+            </div>
+            <div>
+              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+                RFCNumber
+              </label>
+              <input
+                {...register('RFCNumber')}
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+              />
+            </div>
+            <div>
+              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+                RFCLink
+              </label>
+              <input
+                {...register('RFCLink')}
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+              />
+            </div>
+            <div>
+              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+                Description
+              </label>
+              <input
+                {...register('Description')}
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+              />
+            </div>
+            <div>
+              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+                ResultDescription
+              </label>
+              <input
+                {...register('ResultDescription')}
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+              />
+            </div>
+            <div>
+              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+                Status
+              </label>
+              <input
+                {...register('Status')}
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+              />
+            </div>
+            <div>
+              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+                CreatedAt
+              </label>
+              <input
+                {...register('CreatedAt')}
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+              />
+            </div>
+
+            <input
+              type='submit'
+              className='bg-green-500 text-white rounded-lg px-8 py-2 mt-5 text-base font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300'
+              onClick={() => setModalActive(!modalActive)}
+              value='Создать'
+            />
+          </form>
+        </div>
+      </Modal>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
