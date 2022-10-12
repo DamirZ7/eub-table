@@ -7,6 +7,7 @@ import Modal from './components/Modal'
 
 const App = () => {
   const [modalActive, setModalActive] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const {
     register,
@@ -14,7 +15,24 @@ const App = () => {
     watch,
     formState: { errors },
   } = useForm()
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = async (data) => {
+    console.log(data)
+    await fetch('https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        console.log(data)
+        setSubmitted(true)
+      })
+      .catch((err) => {
+        console.error(err)
+        setSubmitted(false)
+      })
+  }
 
   return (
     <div className='container mx-auto px-4 sm:px-4'>
@@ -39,17 +57,8 @@ const App = () => {
           <form
             id='submitForm'
             onSubmit={handleSubmit(onSubmit)}
-            className='flex flex-col m-2 p-2 w-full'
+            className='flex flex-col m-2 p-2 w-full mx-auto'
             method='POST'>
-            <div>
-              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
-                ID
-              </label>
-              <input
-                {...register('ID')}
-                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
-              />
-            </div>
             <div>
               <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
                 RFCNumber
@@ -92,15 +101,6 @@ const App = () => {
               </label>
               <input
                 {...register('Status')}
-                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
-              />
-            </div>
-            <div>
-              <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
-                CreatedAt
-              </label>
-              <input
-                {...register('CreatedAt')}
                 className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
               />
             </div>
