@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 
 import Table from './components/Table'
 import Modal from './components/Modal'
+import Select from './components/Select'
 
 const App = () => {
   const [modalActive, setModalActive] = useState(false)
@@ -43,12 +44,14 @@ const App = () => {
         <div className='py-3'>
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className='bg-green-500 text-white rounded-md px-8 py-2 text-base font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300'
+            className='bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-md px-8 py-2 text-base font-medium  focus:outline-none focus:ring-2 focus:ring-purple-300'
             id='open-btn'
             onClick={() => setModalActive(!modalActive)}>
             Добавить запись
           </motion.button>
         </div>
+        <hr className='m-6' />
+
         <Table />
       </div>
       <Modal active={modalActive} setActive={setModalActive}>
@@ -65,7 +68,7 @@ const App = () => {
               </label>
               <input
                 {...register('RFCNumber')}
-                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
               />
             </div>
             <div>
@@ -74,7 +77,7 @@ const App = () => {
               </label>
               <input
                 {...register('RFCLink')}
-                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
               />
             </div>
             <div>
@@ -83,7 +86,7 @@ const App = () => {
               </label>
               <input
                 {...register('Description')}
-                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
               />
             </div>
             <div>
@@ -92,7 +95,7 @@ const App = () => {
               </label>
               <input
                 {...register('ResultDescription')}
-                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
               />
             </div>
             <div>
@@ -101,13 +104,13 @@ const App = () => {
               </label>
               <input
                 {...register('Status')}
-                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-emerald-500 focus:ring'
+                className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
               />
             </div>
 
             <input
               type='submit'
-              className='bg-green-500 text-white rounded-lg px-8 py-2 mt-5 text-base font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300'
+              className='bg-indigo-500 text-white rounded-lg px-8 py-2 mt-5 text-base font-medium hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-indigo-300'
               onClick={() => setModalActive(!modalActive)}
               value='Создать'
             />
