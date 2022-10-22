@@ -8,8 +8,28 @@ body {
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-color: rgb(236, 236, 236); */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+@layer components {
+  .page {
+    @apply bg-white h-10 w-10 flex items-center justify-center font-bold border-solid border-2 border-violet-500 bg-transparent rounded-lg;
+  }
+
+  .page.active,
+  .page:hover {
+    @apply bg-indigo-500;
+  }
+
+  .page.disabled {
+    @apply bg-transparent cursor-not-allowed opacity-50;
+  }
+
+  .page.inactive {
+    @apply hidden;
+  }
 }
