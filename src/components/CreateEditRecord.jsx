@@ -26,13 +26,14 @@ const CreateEditRecord = ({ id, active, setActive }) => {
       },
       body: JSON.stringify(data),
     }).then((res) => {
+      setActive(!active)
       console.log(res)
       alert(res['statusText'])
       if (res['status'] === 201) {
         window.location.href = '/'
       }
     })
-    setActive(!active)
+    // setActive(!active)
   }
 
   const updateRecord = async (id, data) => {
@@ -66,6 +67,7 @@ const CreateEditRecord = ({ id, active, setActive }) => {
   return (
     <div className='flex justify-between flex-col items-center'>
       <span className='font-bold text-lg'>{isAddMode ? 'Добавить запись' : 'Изменить запись'}</span>
+
       <form
         id='submitForm'
         onSubmit={handleSubmit(onSubmit)}
@@ -95,7 +97,8 @@ const CreateEditRecord = ({ id, active, setActive }) => {
           <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
             Description
           </label>
-          <input
+          <textarea
+            type='textarea'
             {...register('Description')}
             className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
           />
@@ -114,8 +117,9 @@ const CreateEditRecord = ({ id, active, setActive }) => {
             Status
           </label>
           <input
+            type='checkbox'
             {...register('Status')}
-            className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
+            className='block box-border w-1/8 p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
           />
         </div>
         <input

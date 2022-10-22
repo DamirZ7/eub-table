@@ -26,9 +26,10 @@ const Table = () => {
     gaps,
     setPage,
     totalPages,
-  } = usePagination({ contentPerPage: 10, count: eubData.length })
+  } = usePagination({ contentPerPage: 15, count: eubData.length })
 
   const [idData, setIdData] = useState('')
+  console.log(eubData)
 
   useEffect(() => {
     axiosData()
@@ -69,19 +70,13 @@ const Table = () => {
   return (
     <>
       <div className='flex justify-between items-center'>
-        <div className='flex flex-col justify-start w-full'>
+        <div className='flex flex-row justify-start w-full'>
           <button
-            className='w-1/6 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-lg px-8 py-2 mb-2.5 shadow-md text-base font-medium  focus:outline-none focus:ring-2 focus:ring-purple-300'
+            className='w-1/6 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-lg px-8 py-2 mb-2.5 mr-5 shadow-md text-base font-medium  focus:outline-none focus:ring-2 focus:ring-purple-300'
             onClick={() => setModalActive(!modalActive)}>
             Создать
           </button>
 
-          <Input
-            type='text'
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder='Поиск...'
-          />
           <Select
             value={selectedSort}
             onChange={sortList}
@@ -91,6 +86,12 @@ const Table = () => {
               { value: 'CreatedAt', name: 'По дате' },
               { value: 'ResultDescription', name: 'По описанию' },
             ]}
+          />
+          <Input
+            type='text'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder='Поиск...'
           />
         </div>
         <div className='flex flex-row justify-end w-1/6'>
@@ -151,13 +152,13 @@ const Table = () => {
                   <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{obj.RFCLink}</p>
                   </td>
-                  <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                  <td className='w-1/4 px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{obj.Description}</p>
                   </td>
                   <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{obj.ResultDescription}</p>
                   </td>
-                  <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                  <td className='text-center border-b border-gray-200 bg-white text-sm'>
                     {obj.Status ? (
                       <span className='w-3 h-3 bg-emerald-500 rounded-full inline-block'></span>
                     ) : (
@@ -166,13 +167,11 @@ const Table = () => {
                   </td>
                   <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <span className='relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight'>
-                      <span
-                        aria-hidden
-                        className='absolute inset-0 bg-violet-200 opacity-50 rounded-full'></span>
+                      <span aria-hidden className='absolute inset-0 opacity-50 rounded-full'></span>
                       <span className='relative'>{obj.CreatedAt}</span>
                     </span>
                   </td>
-                  <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                  <td className='text-center px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <button
                       onClick={() => {
                         setIdData(obj.ID)
@@ -181,7 +180,7 @@ const Table = () => {
                       <AiFillEdit />
                     </button>
                   </td>
-                  <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                  <td className='text-center px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <button onClick={() => dataDelete(obj.ID)}>
                       <AiFillCloseCircle />
                     </button>
