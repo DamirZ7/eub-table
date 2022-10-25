@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { motion } from 'framer-motion'
 import '../index.css'
-
 import { AiFillEdit, AiFillCloseCircle } from 'react-icons/ai'
 import axios from 'axios'
-import { Reorder } from 'framer-motion'
 import Modal from './Modal'
 import Select from './Select'
 import Input from './Input'
@@ -12,11 +9,13 @@ import usePagination from '../hooks/usePagination'
 import CreateEditRecord from './CreateEditRecord'
 
 const Table = () => {
+  let LIMIT = 10
   const [eubData, setEubData] = useState([])
   const [modalEditActive, setModalEditActive] = useState(false)
   const [modalActive, setModalActive] = useState(false)
   const [selectedSort, setSelectedSort] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [loader, setLoader] = useState(false)
   const {
     firstContentIndex,
     lastContentIndex,
@@ -26,10 +25,21 @@ const Table = () => {
     gaps,
     setPage,
     totalPages,
-  } = usePagination({ contentPerPage: 15, count: eubData.length })
+  } = usePagination({ contentPerPage: LIMIT, count: eubData.length })
+
+  const title = [
+    'ID',
+    'RFCNumber',
+    'RFCLink',
+    'Description',
+    'ResultDescription',
+    'Status',
+    'CreatedAt',
+    'Edit',
+    'Delete',
+  ]
 
   const [idData, setIdData] = useState('')
-  console.log(eubData)
 
   useEffect(() => {
     axiosData()
@@ -37,7 +47,6 @@ const Table = () => {
 
   const axiosData = async () => {
     const search = searchQuery ? `&search=${searchQuery}` : ''
-
     const data = await axios
       .get(`https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items?${search}`)
       .then((response) => response.data)
@@ -46,10 +55,11 @@ const Table = () => {
   }
 
   const dataDelete = async (id) => {
+    setLoader(true)
     await axios
       .delete(`https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items/${id}`)
       .then((data) => {
-        console.log(data)
+        setLoader(false)
         data.status === 200 ? alert('Данные удалены') : alert(data.statusText)
       })
     axiosData()
@@ -76,7 +86,6 @@ const Table = () => {
             onClick={() => setModalActive(!modalActive)}>
             Создать
           </button>
-
           <Select
             value={selectedSort}
             onChange={sortList}
@@ -102,42 +111,18 @@ const Table = () => {
       </div>
       <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
         <div className='inline-block min-w-full shadow-md rounded-lg overflow-hidden'>
-          {/* <Reorder.Group values={eubData} onReorder={setEubData}> */}
           <table className='min-w-full leading-normal'>
             <thead>
               <tr>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-md font-semibold text-gray-700 uppercase tracking-wider'>
-                  ID
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  RFCNumber
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  RFCLink
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  Description
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  ResultDescription
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  Status
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  CreatedAt
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  Edit
-                </th>
-                <th className='px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider'>
-                  Delete
-                </th>
+                {title.map((line, i) => (
+                  <th key={i} className='row'>
+                    {line}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {sortedList.slice(firstContentIndex, lastContentIndex).map((obj, i) => (
-                // <Reorder.Item as='tr' key={obj.ID} value={obj.ID}>
                 <tr key={i}>
                   <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>
                     <div className='flex'>
@@ -153,12 +138,12 @@ const Table = () => {
                     <p className='text-gray-900 whitespace-no-wrap'>{obj.RFCLink}</p>
                   </td>
                   <td className='w-1/4 px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-                    <p className='text-gray-900 whitespace-no-wrap'>{obj.Description}</p>
+                    <p className=' text-gray-900 whitespace-no-wrap'>{obj.Description}</p>
                   </td>
                   <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                     <p className='text-gray-900 whitespace-no-wrap'>{obj.ResultDescription}</p>
                   </td>
-                  <td className='text-center border-b border-gray-200 bg-white text-sm'>
+                  <td className='px-5 py-5 text-center border-b border-gray-200 bg-white text-sm'>
                     {obj.Status ? (
                       <span className='w-3 h-3 bg-emerald-500 rounded-full inline-block'></span>
                     ) : (
@@ -186,15 +171,14 @@ const Table = () => {
                     </button>
                   </td>
                 </tr>
-                // </Reorder.Item>
               ))}
             </tbody>
           </table>
-          {/* </Reorder.Group> */}
         </div>
+        {/* Pagination */}
         <div className='flex items-center justify-center gap-4 my-6'>
           <p className='opacity-0.6 text-xl'>
-            {page}/{totalPages}
+            {page} / {totalPages}
           </p>
           {totalPages === 1 ? (
             <>
@@ -231,6 +215,7 @@ const Table = () => {
             </>
           )}
         </div>
+        {/* Pagination */}
         {modalActive && (
           <Modal active={modalActive} setActive={setModalActive}>
             <CreateEditRecord active={modalActive} setActive={setModalActive} />

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
+import { ColorRing } from 'react-loader-spinner'
 
 const CreateEditRecord = ({ id, active, setActive }) => {
   const isAddMode = !id
+  const [loader, setLoader] = useState(false)
 
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     setValue,
     formState: { errors },
@@ -19,6 +20,8 @@ const CreateEditRecord = ({ id, active, setActive }) => {
   }
 
   const createRecord = async (data) => {
+    // setActive(!active)
+    setLoader(true)
     await fetch('https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items', {
       method: 'POST',
       headers: {
@@ -26,9 +29,9 @@ const CreateEditRecord = ({ id, active, setActive }) => {
       },
       body: JSON.stringify(data),
     }).then((res) => {
+      setLoader(false)
       setActive(!active)
-      console.log(res)
-      alert(res['statusText'])
+      // alert(res['statusText'])
       if (res['status'] === 201) {
         window.location.href = '/'
       }
@@ -37,6 +40,8 @@ const CreateEditRecord = ({ id, active, setActive }) => {
   }
 
   const updateRecord = async (id, data) => {
+    // setActive(!active)
+    setLoader(true)
     await fetch(`https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items/${id}`, {
       method: 'PUT',
       headers: {
@@ -44,13 +49,15 @@ const CreateEditRecord = ({ id, active, setActive }) => {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      alert(res['statusText'])
+      setLoader(false)
+      setActive(!active)
+      // alert(res['statusText'])
       if (res['status'] === 200) {
         window.location.href = '/'
       }
     })
 
-    setActive(!active)
+    // setActive(!active)
   }
 
   useEffect(() => {
@@ -68,67 +75,79 @@ const CreateEditRecord = ({ id, active, setActive }) => {
     <div className='flex justify-between flex-col items-center'>
       <span className='font-bold text-lg'>{isAddMode ? 'Добавить запись' : 'Изменить запись'}</span>
 
-      <form
-        id='submitForm'
-        onSubmit={handleSubmit(onSubmit)}
-        className='flex flex-col m-2 p-2 w-full mx-auto'
-        onReset={reset}
-        // method='POST'
-      >
-        <div>
-          <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
-            RFCNumber
-          </label>
-          <input
-            {...register('RFCNumber')}
-            className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
-          />
-        </div>
-        <div>
-          <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
-            RFCLink
-          </label>
-          <input
-            {...register('RFCLink')}
-            className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
-          />
-        </div>
-        <div>
-          <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
-            Description
-          </label>
-          <textarea
-            type='textarea'
-            {...register('Description')}
-            className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
-          />
-        </div>
-        <div>
-          <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
-            ResultDescription
-          </label>
-          <input
-            {...register('ResultDescription')}
-            className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
-          />
-        </div>
-        <div>
-          <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
-            Status
-          </label>
-          <input
-            type='checkbox'
-            {...register('Status')}
-            className='block box-border w-1/8 p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
-          />
-        </div>
-        <input
-          type='submit'
-          className='bg-indigo-500 text-white rounded-lg px-8 py-2 mt-5 text-base font-medium hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-indigo-300'
-          // onClick={() => setActive(!active)}
-          value={isAddMode ? 'Создать' : 'Изменить'}
+      {loader ? (
+        <ColorRing
+          visible={true}
+          height='80'
+          width='80'
+          ariaLabel='blocks-loading'
+          wrapperStyle={{}}
+          wrapperClass='blocks-wrapper'
+          colors={['#5C00A3', '#5C00A3', '#7500D1', '#8F00FF', '#A32EFF']}
         />
-      </form>
+      ) : (
+        <form
+          id='submitForm'
+          onSubmit={handleSubmit(onSubmit)}
+          className='flex flex-col m-2 p-2 w-full mx-auto'
+          onReset={reset}
+          // method='POST'
+        >
+          <div>
+            <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+              RFCNumber
+            </label>
+            <input
+              {...register('RFCNumber')}
+              className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
+            />
+          </div>
+          <div>
+            <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+              RFCLink
+            </label>
+            <input
+              {...register('RFCLink')}
+              className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
+            />
+          </div>
+          <div>
+            <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+              Description
+            </label>
+            <textarea
+              type='textarea'
+              {...register('Description')}
+              className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
+            />
+          </div>
+          <div>
+            <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+              ResultDescription
+            </label>
+            <input
+              {...register('ResultDescription')}
+              className='block box-border w-full p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
+            />
+          </div>
+          <div>
+            <label htmlFor='id' className='text-md block mb-3 mt-2 font-semibold'>
+              Status
+            </label>
+            <input
+              type='checkbox'
+              {...register('Status')}
+              className='block box-border w-1/8 p-2.5 mb-2.5 text-base border border-slate-100 rounded-xl bg-white shadow-md outline-none form-input ring-indigo-500 focus:ring'
+            />
+          </div>
+          <input
+            type='submit'
+            className='bg-indigo-500 text-white rounded-lg px-8 py-2 mt-5 text-base font-medium hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-indigo-300'
+            // onClick={() => setActive(!active)}
+            value={isAddMode ? 'Создать' : 'Изменить'}
+          />
+        </form>
+      )}
     </div>
   )
 }

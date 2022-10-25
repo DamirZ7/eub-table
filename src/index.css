@@ -17,19 +17,23 @@ code {
 
 @layer components {
   .page {
-    @apply bg-white h-10 w-10 flex items-center justify-center font-bold border-solid border-2 border-violet-500 bg-transparent rounded-lg;
+    @apply bg-white h-8 w-8 flex items-center justify-center font-bold border-solid border-2 border-violet-500 bg-transparent rounded-lg;
   }
 
   .page.active,
   .page:hover {
-    @apply bg-indigo-500;
+    @apply bg-violet-500 text-white;
   }
 
   .page.disabled {
-    @apply bg-transparent cursor-not-allowed opacity-50;
+    @apply bg-transparent cursor-not-allowed opacity-50 text-black;
   }
 
   .page.inactive {
     @apply hidden;
+  }
+
+  .row {
+    @apply px-5 py-3 border-b-2 border-gray-200 text-left text-sm font-bold text-gray-700 uppercase tracking-wider;
   }
 }
