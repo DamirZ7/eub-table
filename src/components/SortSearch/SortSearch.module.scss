@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.navRow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+//flex flex-row justify-start w-full
+
+.recordsLength {
+  width: 16.66667%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  &_text {
+    font-weight: 500;
+    font-size: 1.25rem /* 20px */;
+    line-height: 1.75rem /* 28px */;
+  }
+}
+//flex flex-row justify-end w-1/6

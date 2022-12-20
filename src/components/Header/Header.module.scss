@@ -1,0 +1,26 @@
+.root {
+  // max-width: 10rem /* 160px */;
+  width: 100%;
+  display: block;
+  align-items: center;
+
+  padding-top: 1.5rem /* 8px */;
+  padding-bottom: 1.5rem /* 8px */;
+  // background-color: white;
+}
+
+.logo {
+  height: 100%;
+  width: 18rem;
+  padding-left: 30px;
+}
+
+.pad {
+  padding-top: 0.5rem /* 8px */;
+  padding-bottom: 0.5rem /* 8px */;
+}
+
+.line {
+  border-top: 0.5px solid #ffffff;
+  margin: 1.5rem;
+}

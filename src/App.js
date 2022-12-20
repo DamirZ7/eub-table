@@ -1,19 +1,25 @@
-import React, { createContext } from 'react'
-import Table from './components/Table'
+import './App.scss'
+import ThemeProvider from './theme'
+import Rfc from './pages/Rfc'
+import SideNav from './components/SideNav'
+import { Routes, Route, Outlet } from 'react-router-dom'
+import Partners from './pages/Partners'
 import Header from './components/Header'
-
-// export const SearchContext = createContext('')
 
 const App = () => {
   return (
-    <div className='mx-auto px-8'>
-      {/* <SearchContext.Provider> */}
-      <div className=' w-full p-2'>
-        <Header />
-        <Table />
+    <ThemeProvider>
+      {/* <Header /> */}
+      <div className='App'>
+        <SideNav />
+        <main>
+          <Routes>
+            <Route path='/' element={<Rfc />} />
+            <Route path='/partners' element={<Partners />} />
+          </Routes>
+        </main>
       </div>
-      {/* </SearchContext.Provider> */}
-    </div>
+    </ThemeProvider>
   )
 }
 
