@@ -6,7 +6,7 @@ import styles from './Rfc.module.scss'
 const Rfc = () => {
   return (
     <div className={styles.root}>
-      <Header />
+      {/* <Header /> */}
       <RFCTable />
     </div>
   )

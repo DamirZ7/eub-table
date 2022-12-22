@@ -128,7 +128,9 @@ const ModalForm = ({ id, active, setActive }) => {
             <Controller
               name='Description'
               control={control}
-              render={({ field }) => <InputTest {...field} label='Description' multiline />}
+              render={({ field }) => (
+                <InputTest {...field} label='Description' maxRows='10' multiline />
+              )}
             />
           </div>
           <div>
@@ -140,6 +142,7 @@ const ModalForm = ({ id, active, setActive }) => {
               )}
             />
           </div>
+
           <div>
             <Controller
               name='Status'

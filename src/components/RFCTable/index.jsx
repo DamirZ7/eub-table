@@ -23,6 +23,7 @@ import SortSearch from '../SortSearch'
 import { Container } from '@mui/system'
 import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
+import { toast } from 'react-toastify'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,6 +56,20 @@ const title = [
   'Edit',
   'Delete',
 ]
+
+export const notifySuccess = (message) =>
+  toast(<p style={{ fontSize: 16 }}>{message}</p>, {
+    position: 'top-right',
+    autoClose: 5000,
+    hideProgressBar: false,
+    newestOnTop: false,
+    closeOnClick: true,
+    rtl: false,
+    pauseOnFocusLoss: true,
+    draggable: true,
+    pauseOnHover: true,
+    type: 'success',
+  })
 
 const RFCTable = () => {
   dayjs.extend(calendar)
@@ -97,7 +112,8 @@ const RFCTable = () => {
       .delete(`https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items/${id}`)
       .then((data) => {
         setLoader(false)
-        data.status === 200 ? alert(data.statusText) : alert(data.statusText)
+
+        data.status === 200 ? notifySuccess('Запись успешно удалена!') : alert(data.statusText)
       })
     axiosData()
     // setEubData(eubData.filter((line) => line.ID !== id))
@@ -206,7 +222,11 @@ const RFCTable = () => {
                     </StyledTableCell>
                     <StyledTableCell align='left' width={40}>
                       <PrimaryButton
-                        sx={{ minWidth: 40 }}
+                        sx={{
+                          minWidth: 40,
+                          transition: 'border-radius 0.4s',
+                          '&:hover': { borderRadius: '.2rem' },
+                        }}
                         size='small'
                         onClick={() => {
                           setIdData(row.ID)
@@ -217,7 +237,12 @@ const RFCTable = () => {
                     </StyledTableCell>
                     <StyledTableCell align='left' width={40}>
                       <PrimaryButton
-                        sx={{ minWidth: 40, background: '#ff006d' }}
+                        sx={{
+                          minWidth: 40,
+                          background: '#ff006d',
+                          transition: 'border-radius 0.4s',
+                          '&:hover': { background: '#ff0000', borderRadius: '.2rem' },
+                        }}
                         size='small'
                         onClick={() => dataDelete(row.ID)}>
                         <Iconify icon={'eva:trash-2-outline'} />

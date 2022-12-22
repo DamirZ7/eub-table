@@ -9,8 +9,11 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 500,
+  overflow: 'hidden',
+  width: 650,
+
   // bgcolor: 'background.paper',
+
   borderRadius: '1.875rem',
   boxShadow: 24,
   p: 3,
@@ -31,13 +34,14 @@ const ModalWindow = ({ active, setActive, children }) => {
       open={active}
       closeAfterTransition
       keepMounted
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 300,
-      }}>
-      <Fade in={active}>
-        <Box sx={style}>{children}</Box>
-      </Fade>
+      // BackdropComponent={Backdrop}
+      // BackdropProps={{
+      //   timeout: 300,
+      // }}
+      sx={{ backdropFilter: 'blur(2px)' }}>
+      {/* <Fade in={active}> */}
+      <Box sx={style}>{children}</Box>
+      {/* </Fade> */}
     </Modal>
     // <div
     //   className={

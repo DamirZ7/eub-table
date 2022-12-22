@@ -5,6 +5,8 @@ import SideNav from './components/SideNav'
 import { Routes, Route, Outlet } from 'react-router-dom'
 import Partners from './pages/Partners'
 import Header from './components/Header'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
   return (
@@ -12,6 +14,18 @@ const App = () => {
       {/* <Header /> */}
       <div className='App'>
         <SideNav />
+        <ToastContainer
+          position='bottom-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+        />
         <main>
           <Routes>
             <Route path='/' element={<Rfc />} />
