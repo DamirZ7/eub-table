@@ -21,9 +21,8 @@ import Label from '../UI/label'
 import useDebounce from '../../hooks/useDebounce'
 import SortSearch from '../SortSearch'
 import { Container } from '@mui/system'
-import Alert from '@mui/material/Alert'
-import Stack from '@mui/material/Stack'
 import { toast } from 'react-toastify'
+import AlertDialog from '../DialogWindow'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -60,7 +59,7 @@ const title = [
 export const notifySuccess = (message) =>
   toast(<p style={{ fontSize: 16 }}>{message}</p>, {
     position: 'top-right',
-    autoClose: 5000,
+    autoClose: 1700,
     hideProgressBar: false,
     newestOnTop: false,
     closeOnClick: true,
@@ -76,12 +75,14 @@ const RFCTable = () => {
   const [eubData, setEubData] = useState([])
   const [modalEditActive, setModalEditActive] = useState(false)
   const [modalActive, setModalActive] = useState(false)
+  const [dialogActive, setDialogActive] = useState(false)
   const [selectedSort, setSelectedSort] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [loader, setLoader] = useState(false)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [page, setPage] = React.useState(0)
   const [idData, setIdData] = useState('')
+  const [deleteId, setDeleteId] = useState('')
   const debSearchQuery = useDebounce(searchQuery, 2000)
 
   const handleChangePage = (event, newPage) => {
@@ -106,18 +107,17 @@ const RFCTable = () => {
     setEubData(data)
   }
 
-  const dataDelete = async (id) => {
-    setLoader(true)
-    await axios
-      .delete(`https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items/${id}`)
-      .then((data) => {
-        setLoader(false)
-
-        data.status === 200 ? notifySuccess('Запись успешно удалена!') : alert(data.statusText)
-      })
-    axiosData()
-    // setEubData(eubData.filter((line) => line.ID !== id))
-  }
+  // const dataDelete = async (id) => {
+  //   setLoader(true)
+  //   await axios
+  //     .delete(`https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items/${id}`)
+  //     .then((data) => {
+  //       setLoader(false)
+  //       data.status === 200 ? notifySuccess('Запись успешно удалена!') : alert(data.statusText)
+  //     })
+  //   axiosData()
+  //   // setEubData(eubData.filter((line) => line.ID !== id))
+  // }
 
   const sortedList = useMemo(() => {
     if (selectedSort) {
@@ -244,7 +244,11 @@ const RFCTable = () => {
                           '&:hover': { background: '#ff0000', borderRadius: '.2rem' },
                         }}
                         size='small'
-                        onClick={() => dataDelete(row.ID)}>
+                        // onClick={() => dataDelete(row.ID)}
+                        onClick={() => {
+                          setDeleteId(row.ID)
+                          setDialogActive(!dialogActive)
+                        }}>
                         <Iconify icon={'eva:trash-2-outline'} />
                       </PrimaryButton>
                     </StyledTableCell>
@@ -266,13 +270,26 @@ const RFCTable = () => {
 
         {modalActive && (
           <ModalWindow active={modalActive} setActive={setModalActive}>
-            <RFCModalForm active={modalActive} setActive={setModalActive} />
+            <RFCModalForm active={modalActive} setActive={setModalActive} axiosData={axiosData} />
           </ModalWindow>
         )}
         {modalEditActive && (
           <ModalWindow active={modalEditActive} setActive={setModalEditActive}>
-            <RFCModalForm id={idData} active={modalEditActive} setActive={setModalEditActive} />
+            <RFCModalForm
+              id={idData}
+              active={modalEditActive}
+              setActive={setModalEditActive}
+              axiosData={axiosData}
+            />
           </ModalWindow>
+        )}
+        {dialogActive && (
+          <AlertDialog
+            id={deleteId}
+            active={dialogActive}
+            setActive={setDialogActive}
+            axiosData={axiosData}
+          />
         )}
       </Container>
     </>

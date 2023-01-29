@@ -8,10 +8,11 @@ import PrimaryButton from '../UI/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { pink } from '@mui/material/colors'
 import styles from './ModalForm.module.scss'
+import { notifySuccess } from '../RFCTable'
 
 const fields = ['RFCNumber', 'RFCLink', 'Description', 'ResultDescription', 'Status']
 
-const ModalForm = ({ id, active, setActive }) => {
+const ModalForm = ({ id, active, setActive, axiosData }) => {
   const isAddMode = !id
   const [loader, setLoader] = useState(false)
 
@@ -37,7 +38,6 @@ const ModalForm = ({ id, active, setActive }) => {
   }
 
   const createRecord = async (data) => {
-    // setActive(!active)
     setLoader(true)
     await fetch('https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items', {
       method: 'POST',
@@ -48,16 +48,12 @@ const ModalForm = ({ id, active, setActive }) => {
     }).then((res) => {
       setLoader(false)
       setActive(!active)
-      // alert(res['statusText'])
-      if (res['status'] === 201) {
-        window.location.href = '/'
-      }
+      res.status === 201 ? notifySuccess('Запись успешно создана!') : alert(res.statusText)
     })
-    // setActive(!active)
+    axiosData()
   }
 
   const updateRecord = async (id, data) => {
-    // setActive(!active)
     setLoader(true)
     await fetch(`https://63462c139eb7f8c0f875b17a.mockapi.io/rfcadmin/application/items/${id}`, {
       method: 'PUT',
@@ -68,13 +64,9 @@ const ModalForm = ({ id, active, setActive }) => {
     }).then((res) => {
       setLoader(false)
       setActive(!active)
-      // alert(res['statusText'])
-      if (res['status'] === 200) {
-        window.location.href = '/'
-      }
+      res.status === 200 ? notifySuccess('Запись успешно обновлена!') : alert(res.statusText)
     })
-
-    // setActive(!active)
+    axiosData()
   }
 
   useEffect(() => {
@@ -129,7 +121,7 @@ const ModalForm = ({ id, active, setActive }) => {
               name='Description'
               control={control}
               render={({ field }) => (
-                <InputTest {...field} label='Description' maxRows='10' multiline />
+                <InputTest {...field} label='Description' maxRows='5' multiline />
               )}
             />
           </div>
@@ -138,7 +130,7 @@ const ModalForm = ({ id, active, setActive }) => {
               name='ResultDescription'
               control={control}
               render={({ field }) => (
-                <InputTest {...field} label='Result Description' multiline maxRows='15' />
+                <InputTest {...field} label='Result Description' multiline maxRows='5' />
               )}
             />
           </div>
@@ -153,7 +145,7 @@ const ModalForm = ({ id, active, setActive }) => {
                   control={
                     <Checkbox
                       {...field}
-                      checked={field.value}
+                      checked={!!field.value}
                       sx={{
                         color: pink[600],
                         '&.Mui-checked': {
